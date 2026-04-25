@@ -1,60 +1,60 @@
 #include<stdio.h>
-struct item {
-   
-    float weight;
-    float value;
-    float ppw;
-};
-void sort(struct item items[],int n) {
-    struct item temp;
-    for(int i=0;i<n-1;i++)
+#include<limits.h>
+#define MAXN 15
+#define INF INT_MAX
+int n;
+int d[MAXN][MAXN];
+int  dp[MAXN][1<<MAXN];
+int g(int i,int s)
+{
+    if (s==0)
+        return d[i][0];
+    if (dp[i][s] !=-1)
+        return dp[i][s];
+    int mincost=INF;
+    for (int k=0;k<n;k++)
     {
-        for(int j=0;j<n-i-1;j++)
+        if(s&(1<<k))
         {
-            if (items[j].ppw<items[j+1].ppw])
+            int cost=d[i][k]+g(k,s & ~(1<<k));
+            if (cost<mincost)
             {
-                temp=items[j];
-                items[j]=items[j+1];  
-                items[j+1]=temp;
+                mincost=cost;
             }
         }
     }
-   
+    return dp[i][s]=mincost;
+}
 int main()
 {
-    int n;
-    float capacity;
-   
-    printf("enter no of items: ");
+    printf("enter number of cities: ");
     scanf("%d",&n);
-    struct item itm [n];
-    for (i=0;i<n;i++) {
-        printf("enter item %d weight profit ", i+1);
-        scanf("%f" "%f"itm[i],&.weight itm[i]);
-        itm[i].ratio itm[i].profit/itm[i].weight;
-       
-    }
-    printf("enter knapsack capacity: ");
-    scanf("%f",capacity);
-    sort(items,n);
-    float total profit=0.0;
-    for (int i=0;i<n;i++)
+    printf("Enter cost matrix:\n");
+for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            scanf("%d", &d[i][j]);
+for (int i = 0; i < n; i++)
+        for (int mask = 0; mask < (1 << n); mask++)
+        {
+            dp[i][mask] = -1;
+        }
+
+    int S = 0;
+    for (int i = 1; i < n; i++)
+        S |= (1 << i);
+
+    int result = g(0, S);
+
+    printf("Given Cost Matrix\n");
+    for (int i = 0; i < n; i++)
     {
-        if (capacity >=items[i].weight)
-        {
-            totalprofit+=items[i].value;
-            capacity-=items[i].weight;
-        }
-        else
-        {
-            totalprofit+=items[i].ppw*capacity;
-            break;
-        }
-    }
-    printf)("maximum profit =%2f\n",totalprofit);
-   
        
-   
-   
+        printf("|");
+        for (int j = 0; j < n; j++)
+            printf(" %d ", d[i][j]);
+        printf("|\n");
+    }
+    printf("Minimum travelling cost: %d\n", result);
+
     return 0;
 }
