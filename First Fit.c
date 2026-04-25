@@ -70,4 +70,4 @@ int main()
     firstFit(items, n, capacity);
 
     return 0;
-
+}
